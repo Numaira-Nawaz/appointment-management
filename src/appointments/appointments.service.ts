@@ -18,4 +18,12 @@ export class AppointmentsService {
     const newAppointment = this.AppointmentModel.create(appointment);
     return newAppointment;
   }
+
+  async getAppointmentById(id: string) {
+    return this.AppointmentModel.findById(id);
+  }
+
+  async deleteAppointment(id: string) {
+    return this.AppointmentModel.findByIdAndDelete(id);
+  }
 }

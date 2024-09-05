@@ -18,8 +18,18 @@ export class AppointmentsController {
   async createAppointment(@Body() appointmentData: Appointment) {
     return this.appointmentsService.create(appointmentData);
   }
+  @Get(':id')
+  async getAppointmentById(@Param('id') id: string) {
+    return this.appointmentsService.getAppointmentById(id);
+  }
+
   @Get()
   async getAllAppointments() {
     return this.appointmentsService.getAllAppointments();
+  }
+
+  @Delete(':id')
+  async deleteAppointment(@Param('id') id: string) {
+    return this.appointmentsService.deleteAppointment(id);
   }
 }
