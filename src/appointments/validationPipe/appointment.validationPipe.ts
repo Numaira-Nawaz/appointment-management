@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  IsEnum,
+  IsMongoId,
+} from 'class-validator';
 import { Status } from '../appointment.enum';
 export class CreateUserDTO {
   @IsString()
@@ -15,6 +21,11 @@ export class CreateUserDTO {
 }
 
 export class UpdateStatusrDTO {
-  @IsString()
+  @IsEnum(Status)
   status: Status;
+}
+
+export class ValidateIdDTO {
+  @IsMongoId({ message: 'please enter a valid id' })
+  id: string;
 }
