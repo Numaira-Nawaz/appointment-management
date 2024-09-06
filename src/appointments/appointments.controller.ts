@@ -8,14 +8,13 @@ import {
   Body,
 } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
-import { Appointment } from './schema/appointment.schema';
-
+import { CreateUserDTO } from './validationPipe/appointment.validationPipe';
 @Controller('appointments')
 export class AppointmentsController {
   constructor(private readonly appointmentsService: AppointmentsService) {}
 
   @Post()
-  async createAppointment(@Body() appointmentData: Appointment) {
+  async createAppointment(@Body() appointmentData: CreateUserDTO) {
     return this.appointmentsService.create(appointmentData);
   }
   @Get(':id')
