@@ -16,8 +16,7 @@ export class CreateUserDTO {
   contact: string;
   @IsString()
   doctorName: string;
-  @IsString()
-  date: Date;
+
 }
 
 export class UpdateStatusrDTO {
