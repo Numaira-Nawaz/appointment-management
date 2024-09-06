@@ -15,6 +15,8 @@ export class Appointment {
   doctorName: string;
   @Prop({ required: true })
   date: string;
+  @Prop()
+  status: string;
 }
 
 export const AppointmentSchema = SchemaFactory.createForClass(Appointment);
