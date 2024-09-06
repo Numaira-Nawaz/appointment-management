@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Appointment, AppointmentDocument } from './schema/appointment.schema';
+import { CreateUserDTO } from './validationPipe/appointment.validationPipe';
 
 @Injectable()
 export class AppointmentsService {
@@ -14,7 +15,7 @@ export class AppointmentsService {
     return this.AppointmentModel.find();
   }
 
-  async create(appointment: Appointment) {
+  async create(appointment: CreateUserDTO) {
     const newAppointment = this.AppointmentModel.create(appointment);
     return newAppointment;
   }
