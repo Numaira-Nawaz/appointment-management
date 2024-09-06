@@ -1,5 +1,6 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Status } from '../appointment.enum';
 
 export type AppointmentDocument = Appointment & Document;
 
@@ -15,7 +16,7 @@ export class Appointment {
   doctorName: string;
   @Prop({ required: true })
   date: string;
-  @Prop({ default: 'pending' })
+  @Prop({ enum: Status, default: Status.PENDING })
   status: string;
 }
 
