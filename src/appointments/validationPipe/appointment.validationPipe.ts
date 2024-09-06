@@ -1,5 +1,5 @@
-import { IsEmail, IsEmpty, IsNotEmpty, IsString } from 'class-validator';
-
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { Status } from '../appointment.enum';
 export class CreateUserDTO {
   @IsString()
   @IsNotEmpty({ message: 'please enter a name' })
@@ -12,4 +12,9 @@ export class CreateUserDTO {
   doctorName: string;
   @IsString()
   date: string;
+}
+
+export class UpdateStatusrDTO {
+  @IsString()
+  status: Status;
 }

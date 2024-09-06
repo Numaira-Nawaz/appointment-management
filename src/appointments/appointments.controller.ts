@@ -6,9 +6,13 @@ import {
   Delete,
   Param,
   Body,
+  Patch,
 } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
-import { CreateUserDTO } from './validationPipe/appointment.validationPipe';
+import {
+  CreateUserDTO,
+  UpdateStatusrDTO,
+} from './validationPipe/appointment.validationPipe';
 @Controller('appointments')
 export class AppointmentsController {
   constructor(private readonly appointmentsService: AppointmentsService) {}
@@ -30,5 +34,13 @@ export class AppointmentsController {
   @Delete(':id')
   async deleteAppointment(@Param('id') id: string) {
     return this.appointmentsService.deleteAppointment(id);
+  }
+
+  @Patch(':id')
+  async updateStatus(
+    @Body() updateData: UpdateStatusrDTO,
+    @Param('id') id: string,
+  ) {
+    return this.appointmentsService.updateStatus(id, updateData);
   }
 }
