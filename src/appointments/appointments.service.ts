@@ -5,6 +5,7 @@ import { Appointment, AppointmentDocument } from './schema/appointment.schema';
 import {
   CreateUserDTO,
   UpdateStatusrDTO,
+  ValidateIdDTO,
 } from './validationPipe/appointment.validationPipe';
 
 @Injectable()
@@ -23,15 +24,15 @@ export class AppointmentsService {
     return newAppointment;
   }
 
-  async getAppointmentById(id: string) {
+  async getAppointmentById(id: ValidateIdDTO) {
     return this.AppointmentModel.findById(id);
   }
 
-  async deleteAppointment(id: string) {
+  async deleteAppointment(id: ValidateIdDTO) {
     return this.AppointmentModel.findByIdAndDelete(id);
   }
 
-  async updateStatus(id: string, updateData: UpdateStatusrDTO) {
+  async updateStatus(id: ValidateIdDTO, updateData: UpdateStatusrDTO) {
     return this.AppointmentModel.findByIdAndUpdate(id, updateData, {
       new: true,
     });
