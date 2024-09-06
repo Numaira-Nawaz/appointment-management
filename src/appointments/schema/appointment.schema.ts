@@ -15,7 +15,7 @@ export class Appointment {
   doctorName: string;
   @Prop({ required: true })
   date: string;
-  @Prop()
+  @Prop({ default: 'pending' })
   status: string;
 }
 
