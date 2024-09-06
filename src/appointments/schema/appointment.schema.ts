@@ -9,7 +9,7 @@ export class Appointment {
   name: string;
   @Prop({ required: true })
   contact: number;
-  @Prop({ required: false })
+  @Prop({ required: true })
   email: string;
   @Prop({ required: true })
   doctorName: string;
