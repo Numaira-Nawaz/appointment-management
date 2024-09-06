@@ -24,15 +24,15 @@ export class AppointmentsService {
     return newAppointment;
   }
 
-  async getAppointmentById(id: ValidateIdDTO) {
+  async getAppointmentById(id: string) {
     return this.AppointmentModel.findById(id);
   }
 
-  async deleteAppointment(id: ValidateIdDTO) {
+  async deleteAppointment(id: string) {
     return this.AppointmentModel.findByIdAndDelete(id);
   }
 
-  async updateStatus(id: ValidateIdDTO, updateData: UpdateStatusrDTO) {
+  async updateStatus(id: string, updateData: UpdateStatusrDTO) {
     return this.AppointmentModel.findByIdAndUpdate(id, updateData, {
       new: true,
     });

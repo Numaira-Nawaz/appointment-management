@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import {  Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Status } from '../appointment.enum';
 
@@ -15,7 +15,7 @@ export class Appointment {
   @Prop({ required: true })
   doctorName: string;
   @Prop({ required: true })
-  date: string;
+  date: Date;
   @Prop({ enum: Status, default: Status.PENDING })
   status: string;
 }
