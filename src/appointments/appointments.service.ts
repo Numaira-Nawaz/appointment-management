@@ -23,9 +23,7 @@ export class AppointmentsService {
   async create(appointment: CreateUserDTO) {
     try {
       const canCreate = await this.canCreateAppointment();
-      console.log('cancreate', canCreate);
-
-      if (canCreate) {
+      if (!canCreate) {
         throw new Error(
           'You can only create one appointment every 15 minutes.',
         );
@@ -52,7 +50,7 @@ export class AppointmentsService {
   }
 
   async canCreateAppointment() {
-    const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
+    const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);    
     const existingAppointment = await this.AppointmentModel.findOne({
       createdAt: {
         $gte: fifteenMinutesAgo,
@@ -63,5 +61,9 @@ export class AppointmentsService {
       return true;
     }
     return false;
+  }
+
+  async getAllAppointmentsByDoctorName(drName: string) {
+    return this.AppointmentModel.find({ doctorName: drName });
   }
 }

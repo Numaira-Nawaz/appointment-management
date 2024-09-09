@@ -8,6 +8,7 @@ import {
   Body,
   Patch,
   ValidationPipe,
+  Query,
 } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import {
@@ -16,6 +17,7 @@ import {
   ValidateIdDTO,
 } from './validationPipe/appointment.validationPipe';
 import { Transform } from 'class-transformer';
+
 @Controller('appointments')
 export class AppointmentsController {
   constructor(private readonly appointmentsService: AppointmentsService) {}
@@ -30,6 +32,15 @@ export class AppointmentsController {
     return this.appointmentsService.getAppointmentById(id);
   }
 
+  @Get('doctorAppointments')
+  async getDoctorAppointments(@Query() query) {
+    console.log('query: ', query);
+
+    return this.appointmentsService.getAllAppointmentsByDoctorName(
+      query.drName,
+    );
+  }
+  
   @Get()
   async getAllAppointments() {
     return this.appointmentsService.getAllAppointments();
