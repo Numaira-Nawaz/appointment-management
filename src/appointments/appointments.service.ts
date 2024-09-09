@@ -52,7 +52,7 @@ export class AppointmentsService {
   }
 
   async canCreateAppointment() {
-    const fifteenMinutesAgo = new Date(Date.now() - 15 * 60);
+    const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
     const existingAppointment = await this.AppointmentModel.findOne({
       createdAt: {
         $gte: fifteenMinutesAgo,
