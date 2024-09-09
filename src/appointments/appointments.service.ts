@@ -7,6 +7,7 @@ import {
   UpdateStatusrDTO,
   ValidateIdDTO,
 } from './validationPipe/appointment.validationPipe';
+import { BadRequestException } from '@nestjs/common';
 
 @Injectable()
 export class AppointmentsService {
@@ -20,8 +21,20 @@ export class AppointmentsService {
   }
 
   async create(appointment: CreateUserDTO) {
-    const newAppointment = this.AppointmentModel.create(appointment);
-    return newAppointment;
+    try {
+      const canCreate = await this.canCreateAppointment();
+      console.log('cancreate', canCreate);
+
+      if (canCreate) {
+        throw new Error(
+          'You can only create one appointment every 15 minutes.',
+        );
+      }
+      const newAppointment = this.AppointmentModel.create(appointment);
+      return newAppointment;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   async getAppointmentById(id: string) {
@@ -36,5 +49,19 @@ export class AppointmentsService {
     return this.AppointmentModel.findByIdAndUpdate(id, updateData, {
       new: true,
     });
+  }
+
+  async canCreateAppointment() {
+    const fifteenMinutesAgo = new Date(Date.now() - 15 * 60);
+    const existingAppointment = await this.AppointmentModel.findOne({
+      createdAt: {
+        $gte: fifteenMinutesAgo,
+      },
+    });
+    console.log(!existingAppointment);
+    if (!existingAppointment) {
+      return true;
+    }
+    return false;
   }
 }
