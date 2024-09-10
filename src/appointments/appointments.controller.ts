@@ -16,7 +16,6 @@ import {
   UpdateStatusrDTO,
   ValidateIdDTO,
 } from './validationPipe/appointment.validationPipe';
-import { Transform } from 'class-transformer';
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -26,15 +25,16 @@ export class AppointmentsController {
   async createAppointment(@Body() appointmentData: CreateUserDTO) {
     return this.appointmentsService.create(appointmentData);
   }
+
+  @Get('doctorAppointments')
+  async getDoctorAppointments(@Query('drName') drName: string) {
+    return this.appointmentsService.getAllAppointmentsByDoctorName(drName);
+  }
+
   @Get(':id')
   async getAppointmentById(@Param(new ValidationPipe()) params: ValidateIdDTO) {
     const { id } = params;
     return this.appointmentsService.getAppointmentById(id);
-  }
-
-  @Get('doctorAppointments/:drName')
-  async getDoctorAppointments(@Param('drName') drName: string) {
-    return this.appointmentsService.getAllAppointmentsByDoctorName(drName);
   }
 
   @Get()
@@ -69,6 +69,9 @@ export class AppointmentsController {
     @Body() prescriptionData,
   ) {
     const { id } = params;
-    return this.appointmentsService.scheduleFollowUp(id, prescriptionData.prescription);
+    return this.appointmentsService.scheduleFollowUp(
+      id,
+      prescriptionData.prescription,
+    );
   }
 }
