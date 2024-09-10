@@ -16,7 +16,8 @@ export class CreateUserDTO {
   contact: string;
   @IsString()
   doctorName: string;
-
+  @IsNotEmpty()
+  diagnosis: string;
 }
 
 export class UpdateStatusrDTO {
