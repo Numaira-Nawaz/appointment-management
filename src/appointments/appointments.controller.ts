@@ -32,22 +32,18 @@ export class AppointmentsController {
     return this.appointmentsService.getAppointmentById(id);
   }
 
-  @Get('doctorAppointments')
-  async getDoctorAppointments(@Query() query) {
-    console.log('query: ', query);
-
-    return this.appointmentsService.getAllAppointmentsByDoctorName(
-      query.drName,
-    );
+  @Get('doctorAppointments/:drName')
+  async getDoctorAppointments(@Param('drName') drName: string) {
+    return this.appointmentsService.getAllAppointmentsByDoctorName(drName);
   }
-  
+
   @Get()
   async getAllAppointments() {
     return this.appointmentsService.getAllAppointments();
   }
 
   @Delete(':id')
-  async deleteAppointment(@Param('id') params: ValidateIdDTO) {
+  async deleteAppointment(@Param(new ValidationPipe()) params: ValidateIdDTO) {
     const { id } = params;
     return this.appointmentsService.deleteAppointment(id);
   }
@@ -55,9 +51,24 @@ export class AppointmentsController {
   @Patch(':id')
   async updateStatus(
     @Body() updateData: UpdateStatusrDTO,
-    @Param('id') params: ValidateIdDTO,
+    @Param(new ValidationPipe()) params: ValidateIdDTO,
   ) {
     const { id } = params;
     return this.appointmentsService.updateStatus(id, updateData);
+  }
+
+  @Patch('cancel/:id')
+  async cancelAppointment(@Param(new ValidationPipe()) params: ValidateIdDTO) {
+    const { id } = params;
+    return this.appointmentsService.cancelAppointment(id);
+  }
+
+  @Patch('follow-up/:id')
+  async rescheduleAppointment(
+    @Param(new ValidationPipe()) params: ValidateIdDTO,
+    @Body() prescriptionData,
+  ) {
+    const { id } = params;
+    return this.appointmentsService.scheduleFollowUp(id, prescriptionData.prescription);
   }
 }
