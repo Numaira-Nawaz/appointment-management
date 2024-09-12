@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { ChimeModule } from './chime/chime.module';
 import { ValidationPipe } from '@nestjs/common';
 import mongoose from 'mongoose';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(ChimeModule);
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
