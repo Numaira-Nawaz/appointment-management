@@ -7,15 +7,18 @@ export class ChimeService {
   private chime: AWS.Chime;
 
   constructor(private configService: ConfigService) {
-    const region = this.configService.get<string>('AWS_REGION');
+    const region = this.configService.get<string>('AWS_REGION', 'us-east-2');
+
     AWS.config.update({
       accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY_ID'),
       secretAccessKey: this.configService.get<string>('AWS_SECRET_ACCESS_KEY'),
       region,
     });
-    this.chime.endpoint = new AWS.Endpoint(
-      'https://service.chime.aws.amazon.com/console',
-    );
+
+    this.chime = new AWS.Chime({
+      region,
+      endpoint: 'https://service.chime.aws.amazon.com/console',
+    });
   }
 
   async createMeeting(): Promise<AWS.Chime.CreateMeetingResponse> {
