@@ -6,8 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/appoitment-management'),
-    AppointmentsModule,
     ChimeModule,
+    AppointmentsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
