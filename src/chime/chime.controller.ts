@@ -1,5 +1,5 @@
 import { Controller, Post } from '@nestjs/common';
-import { ChimeService } from './chime.service';
+import { ChimeService } from './chime.service.js';
 
 @Controller('chime')
 export class ChimeController {

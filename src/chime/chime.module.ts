@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ChimeService } from './chime.service';
 import { ChimeController } from './chime.controller';
+import { ChimeService } from './chime.service';
+import { ChimeHelper } from './chime.Helper';
 
 @Module({
   imports: [
@@ -9,7 +10,7 @@ import { ChimeController } from './chime.controller';
       isGlobal: true,
     }),
   ],
-  providers: [ChimeService],
+  providers: [ChimeService, ChimeHelper],
   controllers: [ChimeController],
   exports: [ChimeService],
 })
