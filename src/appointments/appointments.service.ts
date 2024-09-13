@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Appointment, AppointmentDocument } from './schema/appointment.schema';
@@ -8,6 +8,7 @@ import {
   ValidateIdDTO,
 } from './validationPipe/appointment.validationPipe';
 import { BadRequestException } from '@nestjs/common';
+import { Status } from './appointment.enum';
 
 @Injectable()
 export class AppointmentsService {
@@ -23,9 +24,7 @@ export class AppointmentsService {
   async create(appointment: CreateUserDTO) {
     try {
       const canCreate = await this.canCreateAppointment();
-      console.log('cancreate', canCreate);
-
-      if (canCreate) {
+      if (!canCreate) {
         throw new Error(
           'You can only create one appointment every 15 minutes.',
         );
@@ -52,16 +51,48 @@ export class AppointmentsService {
   }
 
   async canCreateAppointment() {
-    const fifteenMinutesAgo = new Date(Date.now() - 15 * 60);
+    const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
     const existingAppointment = await this.AppointmentModel.findOne({
       createdAt: {
         $gte: fifteenMinutesAgo,
+        // $lte: new Date(Date.now()),
       },
     });
-    console.log(!existingAppointment);
+    console.log('found', existingAppointment);
     if (!existingAppointment) {
       return true;
     }
     return false;
+  }
+
+  async getAllAppointmentsByDoctorName(drName: string) {
+    const doctorAppointments = this.AppointmentModel.find({
+      doctorName: drName,
+      status: Status.PENDING,
+    });
+    console.log('doctorAppointments', doctorAppointments);
+    return doctorAppointments;
+  }
+
+  async cancelAppointment(id: string) {
+    const appointment = await this.AppointmentModel.findById(id);
+    if (appointment) {
+      appointment.status = Status.CANCELLED;
+      await appointment.save();
+      return appointment;
+    }
+    throw new NotFoundException('Appointment not found');
+  }
+
+  async scheduleFollowUp(id: string, prescription: string) {
+    const appointment = await this.AppointmentModel.findById(id,{status:'completed'});
+    if (appointment) {
+      appointment.status = Status.REOPEN;
+      appointment.appointment_type = 'follow-up';
+      appointment.prescription = prescription;
+      await appointment.save();
+      return appointment;
+    }
+    throw new NotFoundException('Appointment not found');
   }
 }
