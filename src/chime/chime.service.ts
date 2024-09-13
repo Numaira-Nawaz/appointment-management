@@ -1,11 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { Types } from 'mongoose';
 import { ChimeHelper } from './chime.Helper';
+import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class ChimeService {
   constructor(private readonly chimeHelper: ChimeHelper) {}
+
   async createMeeting() {
-    const externalMeetingId = new Types.ObjectId();
-    return this.chimeHelper.createMeeting('123456987');
+    const externalId = uuidv4();
+
+    return await this.chimeHelper.createMeeting(externalId);
+  }
+
+  async createAttendee(meetingId: string) {
+    return await this.chimeHelper.createAttendee(meetingId);
   }
 }

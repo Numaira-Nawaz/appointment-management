@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   ChimeSDKMeetingsClient,
+  CreateAttendeeCommand,
+  CreateAttendeeCommandInput,
+  CreateAttendeeCommandOutput,
   CreateMeetingCommand,
   CreateMeetingCommandInput,
   CreateMeetingCommandOutput,
@@ -45,13 +48,14 @@ export class ChimeHelper {
     return this.chimeClient.send(command);
   }
 
-  // async createAttendee(
-  //   meetingId: string,
-  // ): Promise<AWS.Chime.CreateAttendeeResponse> {
-  //   const request = {
-  //     MeetingId: meetingId,
-  //     ExternalUserId: `attendee-${Date.now()}`,
-  //   };
-  //   return this.chime.createAttendee(request).promise();
-  // }
+  async createAttendee(
+    meetingId: string,
+  ): Promise<CreateAttendeeCommandOutput> {
+    const request: CreateAttendeeCommandInput = {
+      MeetingId: meetingId,
+      ExternalUserId: `attendee-${Date.now()}`,
+    };
+    const command = new CreateAttendeeCommand(request);
+    return this.chimeClient.send(command);
+  }
 }
